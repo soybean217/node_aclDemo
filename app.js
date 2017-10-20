@@ -16,20 +16,22 @@ var app = express();
 //app.use(session({ secret: 'keyboard cat', cookie: { maxAge: null }}))
 
 var db_of_acl = waterline.config.connections.localMongo;
-var url =  'mongodb://'+db_of_acl.host+':'+ db_of_acl.port+'/'+db_of_acl.database;
+var url = 'mongodb://' + db_of_acl.host + ':' + db_of_acl.port + '/' + db_of_acl.database;
 app.use(session({
-     secret: '12345',
-     name: 'aclDemo',
-     cookie: {maxAge: null },
-     resave: false,
-     saveUninitialized: true,
-     store: new MongoStore({   //创建新的mongodb数据库
-         host: db_of_acl.host,    //数据库的地址，本机的话就是127.0.0.1，也可以是网络主机
-         port: db_of_acl.port,          //数据库的端口号
-         db: db_of_acl.database,        //数据库的名称。
-         url:url
-     })
- }));
+  secret: '12345',
+  name: 'aclDemo',
+  cookie: {
+    maxAge: null
+  },
+  resave: false,
+  saveUninitialized: true,
+  store: new MongoStore({ //创建新的mongodb数据库
+    host: db_of_acl.host, //数据库的地址，本机的话就是127.0.0.1，也可以是网络主机
+    port: db_of_acl.port, //数据库的端口号
+    db: db_of_acl.database, //数据库的名称。
+    url: url
+  })
+}));
 
 
 
@@ -45,7 +47,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 //form提交表单，解析body的（必须）
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 app.use(bodyParser.json());
 
 
@@ -55,26 +59,29 @@ app.use('/', require('./routes/index'));
 app.use('/api/acl_user', require('./app/routes/acl_user'));
 app.use('/api/acl_role', require('./app/routes/acl_role'));
 app.use('/api/acl_resource', require('./app/routes/acl_resource'));
+app.use('/api/stat', require('./app/routes/stat'));
 
 
 
 // 错误请求处理
-app.use(function(req, res, next){
+app.use(function(req, res, next) {
   res.status(404);
   try {
     return res.json('Not Found');
-  } catch(e) {
+  } catch (e) {
     console.error('404 set header after sent');
   }
 });
 
 
-app.use(function(err, req, res, next){
-  if(!err) {return next()}
+app.use(function(err, req, res, next) {
+  if (!err) {
+    return next()
+  }
   res.status(500);
   try {
     return res.json(err.message || 'server error');
-  } catch(e) {
+  } catch (e) {
     console.error('500 set header after sent');
   }
 });

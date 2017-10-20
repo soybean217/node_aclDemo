@@ -8,8 +8,6 @@ var MongoClient = require('mongodb').MongoClient;
 
 
 
-
-
 // models
 var user = require('../app/models/acl_user');
 var role = require('../app/models/acl_role');
@@ -20,8 +18,8 @@ orm.loadCollection(resource);
 
 var wlconfig = {
     adapters: {
-         //mysql: mysqlAdapter,
-         mongo:mongoAdapter
+        //mysql: mysqlAdapter,
+        mongo: mongoAdapter
     },
     connections: {
         //myLocalMySql: {
@@ -36,23 +34,22 @@ var wlconfig = {
         //},
         localMongo: {
             adapter: 'mongo',
-            host:'localhost',
+            host: 'localhost',
             port: '27017',
             database: 'acltest',
-        }
-
+        },
     },
     defaults: {
-        migrate: 'alter'  //修改表结构，默认是drop，alter,safe
+        migrate: 'alter' //修改表结构，默认是drop，alter,safe
     }
 
 };
 
 
-var db_of_acl =wlconfig.connections.localMongo;
-var url = 'mongodb://'+db_of_acl.host+':'+ db_of_acl.port+'/'+db_of_acl.database;
+var db_of_acl = wlconfig.connections.localMongo;
+var url = 'mongodb://' + db_of_acl.host + ':' + db_of_acl.port + '/' + db_of_acl.database;
 
-MongoClient.connect(url , function(err, db) {
+MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     global.acl = new acl(new acl.mongodbBackend(db, 'acl_'));
 });
