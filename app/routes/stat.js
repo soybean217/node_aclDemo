@@ -49,7 +49,7 @@ router.post('/stat', function(req, res) {
         try {
             connection.connect();
             //查询
-            connection.query("SELECT FROM_UNIXTIME(insertTime, '%Y-%m-%d') AS statDay ,cast(COUNT(*)*? as int) AS result FROM imsi_users where insertTime >= UNIX_TIMESTAMP(?)+86400 GROUP BY FROM_UNIXTIME(insertTime, '%Y-%m-%d') ORDER BY statDay DESC", [config.ratioUserCount, queriedData[0].statDay], function(err, rows, fields) {
+            connection.query("SELECT FROM_UNIXTIME(insertTime, '%Y-%m-%d') AS statDay , round(COUNT(*)*?)  AS result FROM imsi_users where insertTime >= UNIX_TIMESTAMP(?)+86400 GROUP BY FROM_UNIXTIME(insertTime, '%Y-%m-%d') ORDER BY statDay DESC", [config.ratioUserCount, queriedData[0].statDay], function(err, rows, fields) {
                 if (err) console.log(err);
                 if (rows.length > 0) {
                     insertStat(rows)
@@ -75,7 +75,7 @@ router.post('/stat', function(req, res) {
         try {
             connection.connect();
             //查询
-            connection.query("SELECT FROM_UNIXTIME(insertTime, '%Y-%m-%d') AS statDay ,cast(COUNT(*)*? as int) AS result FROM imsi_users GROUP BY FROM_UNIXTIME(insertTime, '%Y-%m-%d') ORDER BY statDay DESC", [config.ratioUserCount], function(err, rows, fields) {
+            connection.query("SELECT FROM_UNIXTIME(insertTime, '%Y-%m-%d') AS statDay ,round(COUNT(*)*?) AS result FROM imsi_users GROUP BY FROM_UNIXTIME(insertTime, '%Y-%m-%d') ORDER BY statDay DESC", [config.ratioUserCount], function(err, rows, fields) {
                 if (err) console.log(err);
                 sendResult(rows)
                 insertStat(rows)
