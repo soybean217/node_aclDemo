@@ -6,3 +6,4 @@ npm-debug.log
 .readme.txt
 .idea
 .public/upload
+/package-lock.json
