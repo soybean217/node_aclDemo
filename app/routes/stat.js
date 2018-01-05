@@ -19,7 +19,7 @@ router.post('/stat', function(req, res) {
     try {
         connection.connect();
         //查询
-        connection.query("SELECT statDay,result from stat_day_results where statName='userCount' order by statDay desc ", function(err, rows01, fields) {
+        connection.query("SELECT statDay,result from " + config.statTableName + " where statName='userCount' order by statDay desc ", function(err, rows01, fields) {
             if (err) console.log(err);
             if (rows01.length > 0) {
                 if (rows01[0].statDay == yesterday) {
@@ -118,7 +118,7 @@ router.post('/stat', function(req, res) {
         try {
             connection.connect();
             //查询
-            connection.query("insert stat_day_results (statDay,statName,result) values ?", [values], function(err, rows01, fields) {
+            connection.query("insert " + config.statTableName + " (statDay,statName,result) values ?", [values], function(err, rows01, fields) {
                 if (err) console.log(err);
             });
         } catch (err) {

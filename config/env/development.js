@@ -8,5 +8,6 @@ module.exports = {
 		database: 'sms_service',
 		port: 3306
 	},
+	statTableName: 'stat_day_results',
 	ratioUserCount: 0.8,
 };
